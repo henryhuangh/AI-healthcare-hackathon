@@ -7,8 +7,8 @@ const _inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const _geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: 'MedGame - Clinical Diagnosis Training',
-  description: 'Sharpen your clinical reasoning with real-world diagnostic scenarios',
+  title: 'RXArena - Clinical Diagnosis Competition',
+  description: 'Compete in real-time clinical diagnosis challenges. Practice, rank, and battle in private rooms.',
   generator: 'v0.app',
   icons: {
     icon: [

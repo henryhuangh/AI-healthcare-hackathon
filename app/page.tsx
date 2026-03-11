@@ -1,97 +1,130 @@
 "use client"
 
 import { useState } from "react"
-import { Dashboard } from "@/components/med-game/dashboard"
-import { GameModes } from "@/components/med-game/game-modes"
-import { QuestionView } from "@/components/med-game/question-view"
-import { Leaderboard } from "@/components/med-game/leaderboard"
-import { Profile } from "@/components/med-game/profile"
-import { Study } from "@/components/med-game/study"
-import { HostGame } from "@/components/med-game/host-game"
-import { BottomNav } from "@/components/med-game/bottom-nav"
-import { GameResults } from "@/components/med-game/game-results"
+import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { AVATAR_COLORS } from "@/lib/identity"
 
-export type Screen = "dashboard" | "modes" | "question" | "leaderboard" | "profile" | "results" | "study" | "host"
-export type GameMode = "practice" | "competitive" | "blitz"
-export type Difficulty = "easy" | "standard" | "hard"
+export default function LandingPage() {
+  const router = useRouter()
+  const [displayName, setDisplayName] = useState("")
+  const [avatarColor, setAvatarColor] = useState(AVATAR_COLORS[0])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
-export interface GameSession {
-  mode: GameMode
-  difficulty: Difficulty
-  currentQuestion: number
-  totalQuestions: number
-  score: number
-  timeRemaining: number
-  answers: { questionId: number; correct: boolean; timeMs: number }[]
-}
-
-export default function MedGame() {
-  const [screen, setScreen] = useState<Screen>("dashboard")
-  const [gameSession, setGameSession] = useState<GameSession | null>(null)
-
-  const startGame = (mode: GameMode, difficulty: Difficulty) => {
-    const totalQuestions = mode === "blitz" ? 10 : 5
-    const totalTime = mode === "competitive" ? 300 : mode === "blitz" ? 
-      (difficulty === "easy" ? 100 : difficulty === "standard" ? 200 : 300) : 0
-
-    setGameSession({
-      mode,
-      difficulty,
-      currentQuestion: 1,
-      totalQuestions,
-      score: 0,
-      timeRemaining: totalTime,
-      answers: []
-    })
-    setScreen("question")
-  }
-
-  const endGame = () => {
-    setScreen("results")
-  }
-
-  const exitToHome = () => {
-    setGameSession(null)
-    setScreen("dashboard")
+  async function handleEnter() {
+    const trimmed = displayName.trim()
+    if (trimmed.length < 2 || trimmed.length > 24) {
+      setError("Name must be 2–24 characters")
+      return
+    }
+    setLoading(true)
+    setError("")
+    try {
+      const res = await fetch("/api/identity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ displayName: trimmed, avatarColor }),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        setError(data.error ?? "Something went wrong")
+        return
+      }
+      const data = await res.json()
+      // Store for client-side use
+      localStorage.setItem("rxarena_identity", JSON.stringify({
+        guestId: data.guestId,
+        displayName: data.displayName,
+        avatarColor: data.avatarColor,
+      }))
+      router.push("/dashboard")
+    } catch {
+      setError("Network error — please try again")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <main className="flex-1 pb-20 md:pb-0 md:pl-20">
-        {screen === "dashboard" && (
-          <Dashboard onStartGame={() => setScreen("modes")} onHostGame={() => setScreen("host")} onNavigate={setScreen} />
-        )}
-        {screen === "modes" && (
-          <GameModes onSelectMode={startGame} onBack={() => setScreen("dashboard")} />
-        )}
-        {screen === "question" && gameSession && (
-          <QuestionView 
-            session={gameSession} 
-            setSession={setGameSession}
-            onEndGame={endGame}
-            onExit={exitToHome}
-          />
-        )}
-        {screen === "results" && gameSession && (
-          <GameResults session={gameSession} onContinue={exitToHome} onPlayAgain={() => setScreen("modes")} />
-        )}
-        {screen === "leaderboard" && (
-          <Leaderboard onBack={() => setScreen("dashboard")} />
-        )}
-        {screen === "profile" && (
-          <Profile onBack={() => setScreen("dashboard")} />
-        )}
-        {screen === "study" && (
-          <Study onBack={() => setScreen("dashboard")} />
-        )}
-        {screen === "host" && (
-          <HostGame onStartHostedGame={startGame} onBack={() => setScreen("dashboard")} />
-        )}
-      </main>
-      
-      {screen !== "question" && screen !== "results" && screen !== "host" && (
-        <BottomNav currentScreen={screen} onNavigate={setScreen} />
-      )}
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
+        {/* Logo */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary mb-4">
+            <span className="text-primary-foreground font-black text-2xl tracking-tight">RX</span>
+          </div>
+          <h1 className="text-3xl font-black text-foreground tracking-tight">RXArena</h1>
+          <p className="text-muted-foreground text-sm mt-1">Clinical diagnosis. Real competition.</p>
+        </div>
+
+        {/* Form */}
+        <div className="space-y-5">
+          {/* Display name */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Your name</label>
+            <Input
+              placeholder="e.g. DrSarah"
+              value={displayName}
+              onChange={(e) => { setDisplayName(e.target.value); setError("") }}
+              onKeyDown={(e) => e.key === "Enter" && handleEnter()}
+              maxLength={24}
+              autoFocus
+              className="h-12 text-base"
+            />
+            {error && <p className="text-xs text-destructive">{error}</p>}
+          </div>
+
+          {/* Avatar color picker */}
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-foreground">Pick a color</label>
+            <div className="flex gap-2 flex-wrap">
+              {AVATAR_COLORS.map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  onClick={() => setAvatarColor(color)}
+                  className="w-9 h-9 rounded-full border-2 transition-transform hover:scale-110 focus:outline-none"
+                  style={{
+                    backgroundColor: color,
+                    borderColor: avatarColor === color ? "white" : "transparent",
+                    boxShadow: avatarColor === color ? `0 0 0 2px ${color}` : "none",
+                  }}
+                  aria-label={`Select color ${color}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Preview */}
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-muted/50">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white text-sm shrink-0"
+              style={{ backgroundColor: avatarColor }}
+            >
+              {displayName.trim().charAt(0).toUpperCase() || "?"}
+            </div>
+            <div>
+              <p className="text-sm font-medium text-foreground">{displayName.trim() || "Your name here"}</p>
+              <p className="text-xs text-muted-foreground">Guest player</p>
+            </div>
+          </div>
+
+          <Button
+            onClick={handleEnter}
+            disabled={loading || displayName.trim().length < 2}
+            className="w-full h-12 text-base font-semibold"
+            size="lg"
+          >
+            {loading ? "Entering…" : "Enter the Arena"}
+          </Button>
+        </div>
+
+        <p className="text-center text-xs text-muted-foreground mt-6">
+          No account needed. Your progress is saved to this browser.
+        </p>
+      </div>
     </div>
   )
 }

@@ -1,0 +1,158 @@
+[
+  {
+    "id": "CASE_00001",
+    "difficulty": "standard",
+    "specialty": "pulmonology",
+    "patient_persona": {
+      "age": 56,
+      "sex": "F",
+      "chief_complaint": "Worsening shortness of breath",
+      "history": "COPD on home O2 4L/min, hypertension, type 2 diabetes, GERD, depression"
+    },
+    "symptoms": ["Dyspnea", "Expiratory wheeze", "Trace pedal edema", "Increased sputum production"],
+    "vitals": { "bp": "139/72", "hr": 84, "temp": "98.2°F", "rr": 22, "spo2": 95 },
+    "labs": ["ABG: pH 7.48 / pCO2 46 / pO2 110 on 40% FiO2", "WBC 11.2 (mildly elevated)"],
+    "imaging_text": "CXR: Hyperinflated lungs, flattened diaphragms, no focal consolidation",
+    "question_text": "A 56-year-old woman with known COPD on home oxygen presents with worsening dyspnea and increased sputum. She has an expiratory wheeze on exam and trace pedal edema. What is the most likely diagnosis?",
+    "answer_format": "mcq",
+    "options": [
+      "COPD Exacerbation",
+      "Acute Pulmonary Edema",
+      "Pulmonary Embolism",
+      "Community-Acquired Pneumonia"
+    ],
+    "correct_answer": 0,
+    "explanation": "This is a classic COPD exacerbation. The patient has known COPD and presents with worsening dyspnea, increased sputum, and expiratory wheeze. The ABG shows mild respiratory alkalosis without significant CO2 retention. CXR shows hyperinflation without consolidation, making pneumonia less likely. Acute pulmonary edema would show cardiomegaly and pulmonary vascular congestion. PE is possible but less supported by the clinical picture.",
+    "distractors": [
+      { "option": "Acute Pulmonary Edema", "explanation": "APE typically presents with orthopnea, frothy pink sputum, and CXR findings of pulmonary vascular congestion and cardiomegaly. This patient's CXR shows hyperinflation, not congestion." },
+      { "option": "Pulmonary Embolism", "explanation": "PE can present with dyspnea and hypoxia, but the expiratory wheeze, known COPD history, and absence of pleuritic chest pain or leg swelling make this less likely here." },
+      { "option": "Community-Acquired Pneumonia", "explanation": "Pneumonia typically presents with fever, productive cough, and focal consolidation on CXR. The WBC is only mildly elevated and CXR shows no consolidation." }
+    ]
+  },
+  {
+    "id": "CASE_00002",
+    "difficulty": "hard",
+    "specialty": "cardiology",
+    "patient_persona": {
+      "age": 67,
+      "sex": "M",
+      "chief_complaint": "Severe chest pain radiating to left arm",
+      "history": "Hypertension, type 2 diabetes, 30 pack-year smoking history, hyperlipidemia"
+    },
+    "symptoms": ["Crushing chest pain", "Diaphoresis", "Nausea", "Left arm radiation", "Shortness of breath"],
+    "vitals": { "bp": "158/95", "hr": 110, "temp": "37.2°C", "rr": 22, "spo2": 94 },
+    "labs": ["Troponin I: 2.4 ng/mL (elevated, ref <0.04)", "BNP: 480 pg/mL (elevated)", "CK-MB: 18 U/L (elevated)"],
+    "imaging_text": "ECG: ST elevation 2mm in leads V1-V4, reciprocal ST depression in II, III, aVF",
+    "question_text": "A 67-year-old man with hypertension, diabetes, and heavy smoking presents with crushing chest pain radiating to his left arm. ECG shows ST elevation in V1-V4 with reciprocal changes. Troponin is markedly elevated. What is the most appropriate immediate management?",
+    "answer_format": "mcq",
+    "options": [
+      "Emergent percutaneous coronary intervention (PCI)",
+      "IV heparin infusion alone",
+      "Thrombolytic therapy with alteplase",
+      "Urgent surgical coronary artery bypass grafting (CABG)"
+    ],
+    "correct_answer": 0,
+    "explanation": "This patient has an anterior STEMI (ST elevation in V1-V4). The standard of care is emergent PCI (primary PCI) within 90 minutes of first medical contact, as it has superior outcomes to thrombolysis in reducing mortality and re-infarction. Thrombolytics are only preferred when PCI is unavailable within 120 minutes. Heparin alone is insufficient. Emergent CABG is not first-line and is reserved for specific anatomic situations or failed PCI.",
+    "distractors": [
+      { "option": "IV heparin infusion alone", "explanation": "Heparin is adjunctive therapy used alongside PCI or thrombolytics. It does not restore coronary perfusion and alone is insufficient for acute STEMI management." },
+      { "option": "Thrombolytic therapy with alteplase", "explanation": "Thrombolytics are second-line and only indicated when primary PCI cannot be performed within 120 minutes of first medical contact. PCI is superior when available." },
+      { "option": "Urgent surgical coronary artery bypass grafting (CABG)", "explanation": "CABG is not first-line for acute STEMI. It is considered in cases of failed PCI, left main disease, or complex multi-vessel disease not amenable to PCI." }
+    ]
+  },
+  {
+    "id": "CASE_00003",
+    "difficulty": "easy",
+    "specialty": "endocrinology",
+    "patient_persona": {
+      "age": 34,
+      "sex": "F",
+      "chief_complaint": "Fatigue and weight gain for 6 months",
+      "history": "No significant past medical history, no medications"
+    },
+    "symptoms": ["Fatigue", "Weight gain", "Cold intolerance", "Constipation", "Dry skin", "Hair loss", "Bradycardia"],
+    "vitals": { "bp": "105/68", "hr": 58, "temp": "36.1°C", "rr": 14, "spo2": 99 },
+    "labs": ["TSH: 12.5 mIU/L (elevated, ref 0.4-4.0)", "Free T4: 0.5 ng/dL (low, ref 0.8-1.8)", "CBC: normal"],
+    "question_text": "A 34-year-old woman presents with 6 months of fatigue, weight gain, cold intolerance, constipation, and hair loss. Her heart rate is 58 and TSH is markedly elevated with a low free T4. What is the most likely diagnosis?",
+    "answer_format": "mcq",
+    "options": [
+      "Hypothyroidism",
+      "Major Depressive Disorder",
+      "Iron Deficiency Anemia",
+      "Cushing's Syndrome"
+    ],
+    "correct_answer": 0,
+    "explanation": "The constellation of fatigue, weight gain, cold intolerance, constipation, dry skin, hair loss, and bradycardia combined with markedly elevated TSH and low free T4 is diagnostic of primary hypothyroidism. Treatment is levothyroxine replacement.",
+    "distractors": [
+      { "option": "Major Depressive Disorder", "explanation": "Depression can cause fatigue and weight changes, but does not explain the bradycardia, cold intolerance, or the specific pattern of elevated TSH and low T4. Always check thyroid function before diagnosing primary depression." },
+      { "option": "Iron Deficiency Anemia", "explanation": "Iron deficiency causes fatigue and can cause hair loss, but does not cause cold intolerance, constipation, bradycardia, or the thyroid function abnormalities seen here." },
+      { "option": "Cushing's Syndrome", "explanation": "Cushing's causes weight gain but typically presents with central obesity, moon face, buffalo hump, striae, and hypertension. TSH/T4 would be normal." }
+    ]
+  },
+  {
+    "id": "CASE_00004",
+    "difficulty": "hard",
+    "specialty": "neurology",
+    "patient_persona": {
+      "age": 45,
+      "sex": "M",
+      "chief_complaint": "Sudden severe headache — worst of his life",
+      "history": "Smoker, occasional alcohol use, no prior headache history"
+    },
+    "symptoms": ["Thunderclap headache", "Photophobia", "Neck stiffness", "Nausea and vomiting", "Brief loss of consciousness at onset"],
+    "vitals": { "bp": "175/100", "hr": 88, "temp": "37.0°C", "rr": 18, "spo2": 98 },
+    "labs": ["LP: xanthochromic CSF, RBC count 80,000 (non-clearing across tubes)"],
+    "imaging_text": "CT head without contrast: Hyperdense material in subarachnoid space and basal cisterns",
+    "question_text": "A 45-year-old man presents with the sudden onset of 'the worst headache of my life,' brief loss of consciousness, and neck stiffness. CT shows hyperdense material in the subarachnoid space. LP reveals xanthochromic CSF with non-clearing RBCs. What is the most likely diagnosis?",
+    "answer_format": "mcq",
+    "options": [
+      "Subarachnoid Hemorrhage",
+      "Bacterial Meningitis",
+      "Hypertensive Emergency",
+      "Migraine with Aura"
+    ],
+    "correct_answer": 0,
+    "explanation": "The sudden-onset thunderclap headache, brief loss of consciousness, meningismus, and CT/LP findings of blood in the subarachnoid space confirm subarachnoid hemorrhage (SAH), most commonly from a ruptured intracranial aneurysm. Xanthochromia on LP and non-clearing RBCs distinguish true SAH from a traumatic tap. Immediate neurosurgical and neurovascular consultation is required.",
+    "distractors": [
+      { "option": "Bacterial Meningitis", "explanation": "Bacterial meningitis can present with severe headache and neck stiffness, but typically has a more gradual onset, fever, and CSF showing elevated WBCs, elevated protein, and low glucose — not predominantly RBCs with xanthochromia." },
+      { "option": "Hypertensive Emergency", "explanation": "Severe hypertension may cause headache but not the constellation of thunderclap onset, loss of consciousness, meningismus, and bloody CSF seen here. The elevated BP here is likely a Cushing response to elevated ICP." },
+      { "option": "Migraine with Aura", "explanation": "Migraines can be severe but have a gradual onset over minutes, not the instantaneous thunderclap onset described. They do not cause loss of consciousness, meningismus, or bloody CSF." }
+    ]
+  },
+  {
+    "id": "CASE_00005",
+    "difficulty": "standard",
+    "specialty": "endocrinology",
+    "patient_persona": {
+      "age": 19,
+      "sex": "M",
+      "chief_complaint": "Vomiting, abdominal pain, and confusion for 2 days",
+      "history": "Type 1 diabetes mellitus, missed insulin doses for 3 days"
+    },
+    "symptoms": ["Nausea and vomiting", "Diffuse abdominal pain", "Polyuria", "Polydipsia", "Kussmaul respirations", "Fruity breath odor", "Altered mental status"],
+    "vitals": { "bp": "98/62", "hr": 118, "temp": "37.4°C", "rr": 28, "spo2": 97 },
+    "labs": [
+      "Glucose: 520 mg/dL",
+      "pH: 7.18 (acidosis)",
+      "Bicarbonate: 8 mEq/L (low)",
+      "Anion gap: 28 (elevated)",
+      "Serum ketones: large",
+      "Potassium: 5.6 mEq/L (falsely elevated — will drop with insulin)",
+      "BUN: 32 / Creatinine: 1.8 (AKI from dehydration)"
+    ],
+    "question_text": "A 19-year-old man with type 1 diabetes missed insulin for 3 days and now presents with vomiting, abdominal pain, Kussmaul respirations, and altered mental status. Labs show glucose 520, pH 7.18, bicarbonate 8, large serum ketones, and an elevated anion gap. What is the correct initial management sequence?",
+    "answer_format": "mcq",
+    "options": [
+      "IV fluids → insulin infusion → potassium repletion monitoring",
+      "Insulin bolus immediately, then IV fluids",
+      "Sodium bicarbonate infusion to correct acidosis first",
+      "Oral rehydration and subcutaneous insulin correction dose"
+    ],
+    "correct_answer": 0,
+    "explanation": "Diabetic ketoacidosis (DKA) management follows a strict sequence: (1) aggressive IV fluid resuscitation with normal saline first to restore perfusion; (2) insulin infusion only after potassium >3.5 mEq/L (insulin drives K+ intracellularly and can cause dangerous hypokalemia); (3) continuous monitoring and repletion of potassium. Bicarbonate is generally not indicated unless pH <6.9. Oral rehydration is insufficient for DKA severity.",
+    "distractors": [
+      { "option": "Insulin bolus immediately, then IV fluids", "explanation": "Starting insulin before adequate fluid resuscitation can cause cardiovascular collapse. Additionally, insulin drives potassium intracellularly — starting insulin without knowing the potassium level risks life-threatening hypokalemia." },
+      { "option": "Sodium bicarbonate infusion to correct acidosis first", "explanation": "Bicarbonate is not routinely indicated in DKA and is only considered when pH <6.9. Giving bicarbonate can worsen hypokalemia, cause paradoxical CNS acidosis, and impair oxygen delivery via the Bohr effect." },
+      { "option": "Oral rehydration and subcutaneous insulin correction dose", "explanation": "This patient has severe DKA with altered mental status, hemodynamic compromise, and significant acidosis. IV access and an insulin drip are required — oral fluids and subcutaneous insulin are insufficient for this severity." }
+    ]
+  }
+]
