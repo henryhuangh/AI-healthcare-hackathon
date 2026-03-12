@@ -45,7 +45,7 @@ export default async function RoomResultsPage({
     .filter((c): c is NonNullable<ReturnType<typeof getCaseById>> => Boolean(c))
     .map((c, index) => ({
       index: index + 1,
-      question: c.question_text,
+      question: `${c.patient_persona.age}yo ${c.patient_persona.sex} - ${c.patient_persona.chief_complaint}`,
       correctOption: c.options[c.correct_answer] ?? "Unknown",
       explanation: c.explanation,
     }))
@@ -90,13 +90,13 @@ export default async function RoomResultsPage({
       )}
 
       {/* Full list */}
-      <div className="space-y-2 mb-6">
+      <div className="space-y-1.5 mb-5">
         {result.final_rankings.map((r) => (
           <Card
             key={r.guest_id}
-            className={`p-3 border-0 shadow-sm ${r.guest_id === myGuestId ? "border-2 border-primary" : ""}`}
+            className={`p-2.5 border-0 shadow-sm ${r.guest_id === myGuestId ? "border-2 border-primary" : ""}`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               <span className="w-8 text-center font-bold text-muted-foreground text-sm">#{r.rank}</span>
               <div
                 className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white text-xs shrink-0"
@@ -121,15 +121,17 @@ export default async function RoomResultsPage({
       {answerKey.length > 0 && (
         <div className="mb-6">
           <h2 className="text-base font-semibold text-foreground mb-3">Correct Answers</h2>
-          <div className="space-y-2">
+          <div className="max-h-[40vh] overflow-y-auto rounded-xl border border-border p-2 space-y-1.5 pr-1">
             {answerKey.map((item) => (
-              <Card key={item.index} className="p-3 border-0 shadow-sm">
-                <p className="text-xs text-muted-foreground mb-1">Q{item.index}</p>
-                <p className="text-sm font-medium text-foreground mb-2">{item.question}</p>
-                <p className="text-sm text-foreground">
+              <Card key={item.index} className="p-2.5 border-0 shadow-sm">
+                <p className="text-sm font-medium text-foreground mb-1">
+                  <span className="text-xs text-muted-foreground mr-1">Q{item.index}</span>
+                  {item.question}
+                </p>
+                <p className="text-sm text-foreground leading-snug">
                   <span className="font-semibold">Answer:</span> {item.correctOption}
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">{item.explanation}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-snug">{item.explanation}</p>
               </Card>
             ))}
           </div>

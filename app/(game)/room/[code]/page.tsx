@@ -28,6 +28,13 @@ interface CompetitiveSubmitResponse {
   nextCase: SafeCase | null
 }
 
+interface RoomAnswerKeyItem {
+  index: number
+  question: string
+  correctOption: string
+  explanation: string
+}
+
 function Avatar({ color, name, size = "md" }: { color: string; name: string; size?: "sm" | "md" }) {
   const s = size === "sm" ? "w-8 h-8 text-xs" : "w-10 h-10 text-sm"
   return (
@@ -68,6 +75,8 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
   const [scores, setScores] = useState<RoomScore[]>([])
   const [finalRankings, setFinalRankings] = useState<RoomScore[]>([])
   const [competitiveDone, setCompetitiveDone] = useState(false)
+  const [answerKey, setAnswerKey] = useState<RoomAnswerKeyItem[]>([])
+  const [answerKeyLoading, setAnswerKeyLoading] = useState(false)
 
   const eventSourceRef = useRef<EventSource | null>(null)
 
@@ -122,6 +131,33 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
     return () => { es.close() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [joinCode])
+
+  useEffect(() => {
+    if (phase !== "ended") return
+
+    let cancelled = false
+    async function fetchAnswerKey() {
+      setAnswerKeyLoading(true)
+      try {
+        const res = await fetch(`/api/room/${joinCode}/answers`)
+        if (!res.ok) {
+          if (!cancelled) setAnswerKey([])
+          return
+        }
+        const data = (await res.json()) as { answerKey: RoomAnswerKeyItem[] }
+        if (!cancelled) {
+          setAnswerKey(data.answerKey ?? [])
+        }
+      } finally {
+        if (!cancelled) setAnswerKeyLoading(false)
+      }
+    }
+
+    fetchAnswerKey()
+    return () => {
+      cancelled = true
+    }
+  }, [phase, joinCode])
 
   const handleSSEEvent = useCallback((event: SSEEvent) => {
     switch (event.type) {
@@ -318,7 +354,7 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
   if (phase === "ended") {
     const myRank = finalRankings.find((r) => r.guest_id === myGuestId)
     return (
-      <div className="p-4 md:p-8 max-w-lg mx-auto">
+      <div className="p-4 md:p-8 max-w-lg mx-auto h-[calc(100vh-5rem)] md:h-[calc(100vh-2rem)] flex flex-col">
         <header className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-foreground">Match Over!</h1>
           {myRank && (
@@ -328,23 +364,50 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
           )}
         </header>
 
-        <div className="space-y-2 mb-6">
-          {finalRankings.map((r) => (
-            <Card key={r.guest_id} className={`p-3 border-0 shadow-sm ${r.guest_id === myGuestId ? "border-2 border-primary" : ""}`}>
-              <div className="flex items-center gap-3">
-                <span className="w-8 text-center font-bold text-muted-foreground">#{r.rank}</span>
-                <Avatar color={r.avatar_color} name={r.display_name} size="sm" />
-                <div className="flex-1">
-                  <p className="font-medium text-foreground text-sm">{r.display_name}</p>
-                  <p className="text-xs text-muted-foreground">{r.correct_count} correct</p>
-                </div>
-                <span className="font-bold text-foreground">{r.score.toLocaleString()}</span>
-              </div>
-            </Card>
-          ))}
+        <div className="grid grid-rows-2 md:grid-rows-1 md:grid-cols-2 gap-4 flex-1 min-h-0 mb-6">
+          <Card className="p-3 border-0 shadow-sm flex flex-col min-h-0">
+            <h2 className="text-sm font-semibold text-foreground mb-3">Leaderboard</h2>
+            <div className="space-y-2 overflow-y-auto min-h-0 pr-1">
+              {finalRankings.map((r) => (
+                <Card key={r.guest_id} className={`p-3 border-0 shadow-sm ${r.guest_id === myGuestId ? "border-2 border-primary" : ""}`}>
+                  <div className="flex items-center gap-3">
+                    <span className="w-8 text-center font-bold text-muted-foreground">#{r.rank}</span>
+                    <Avatar color={r.avatar_color} name={r.display_name} size="sm" />
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground text-sm">{r.display_name}</p>
+                      <p className="text-xs text-muted-foreground">{r.correct_count} correct</p>
+                    </div>
+                    <span className="font-bold text-foreground">{r.score.toLocaleString()}</span>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="p-3 border-0 shadow-sm flex flex-col min-h-0">
+            <h2 className="text-sm font-semibold text-foreground mb-3">Correct Answers</h2>
+            <div className="space-y-2 overflow-y-auto min-h-0 pr-1">
+              {answerKeyLoading && (
+                <p className="text-sm text-muted-foreground">Loading answers…</p>
+              )}
+              {!answerKeyLoading && answerKey.length === 0 && (
+                <p className="text-sm text-muted-foreground">No answer key available.</p>
+              )}
+              {answerKey.map((item) => (
+                <Card key={item.index} className="p-3 border-0 shadow-sm">
+                  <p className="text-xs text-muted-foreground mb-1">Q{item.index}</p>
+                  <p className="text-sm font-medium text-foreground mb-2">{item.question}</p>
+                  <p className="text-sm text-foreground">
+                    <span className="font-semibold">Answer:</span> {item.correctOption}
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">{item.explanation}</p>
+                </Card>
+              ))}
+            </div>
+          </Card>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-3 shrink-0">
           <Button onClick={() => router.push("/room/create")} className="w-full h-12">Play Again</Button>
           <Button variant="outline" onClick={() => router.push("/dashboard")} className="w-full h-12">Home</Button>
         </div>
