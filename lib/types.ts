@@ -12,6 +12,27 @@ export type Specialty =
   | "emergency"
   | "mixed"
 
+export interface CasesJsonPhysicalExam {
+  vitals: Array<Record<string, string | undefined>>
+  findings: Array<Record<string, string | undefined>>
+}
+
+// Raw schema loaded from data/cases.json
+export interface CasesJsonCase {
+  age: number
+  gender: string
+  caseId: string
+  subjectId: number | null
+  hadmId: number | null
+  diagnosisOptions: string[]
+  correctOption: number
+  pastMedicalHistory: string[]
+  physicalExamination: CasesJsonPhysicalExam
+  // Optional fields for future enrichment
+  difficulty?: Difficulty
+  specialty?: Specialty
+}
+
 export interface Case {
   id: string
   difficulty: Difficulty

@@ -1,7 +1,74 @@
 import casesData from "@/data/cases.json"
-import type { Case, Difficulty, Specialty } from "@/lib/types"
+import type { Case, CasesJsonCase, Difficulty, Specialty } from "@/lib/types"
 
-const allCases = casesData as Case[]
+const rawCases = casesData as CasesJsonCase[]
+
+const DEFAULT_DIFFICULTY: Difficulty = "standard"
+const DEFAULT_SPECIALTY: Specialty = "emergency"
+
+function normalizeKey(input: string): string {
+  return input.trim().toLowerCase().replace(/\s+/g, " ")
+}
+
+function getMapFromEntries(entries: Array<Record<string, string | undefined>>): Record<string, string> {
+  const result: Record<string, string> = {}
+  for (const entry of entries) {
+    for (const [rawKey, value] of Object.entries(entry)) {
+      if (value !== undefined) {
+        result[normalizeKey(rawKey)] = value
+      }
+    }
+  }
+  return result
+}
+
+function parseNumber(value: string | undefined, fallback: number): number {
+  if (!value) return fallback
+  const parsed = Number.parseFloat(value.replace(/[^\d.]/g, ""))
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+function toCase(raw: CasesJsonCase): Case {
+  const vitalMap = getMapFromEntries(raw.physicalExamination.vitals ?? [])
+  const findingMap = getMapFromEntries(raw.physicalExamination.findings ?? [])
+  const symptomsText = findingMap["symptoms"] ?? ""
+  const symptoms = symptomsText
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+
+  const chiefComplaint =
+    findingMap["general"] ?? `Patient with ${raw.pastMedicalHistory[0] ?? "medical concerns"}`
+
+  return {
+    id: raw.caseId,
+    difficulty: raw.difficulty ?? DEFAULT_DIFFICULTY,
+    specialty: raw.specialty ?? DEFAULT_SPECIALTY,
+    patient_persona: {
+      age: raw.age,
+      sex: raw.gender,
+      chief_complaint: chiefComplaint,
+      history: raw.pastMedicalHistory.join(", "),
+    },
+    symptoms,
+    vitals: {
+      bp: vitalMap["blood pressure"] ?? "N/A",
+      hr: parseNumber(vitalMap["pulse"], 0),
+      temp: vitalMap["temperature"] ?? "N/A",
+      rr: parseNumber(vitalMap["respiratory rate"], 0),
+      spo2: parseNumber(vitalMap["spo2"], 0),
+    },
+    question_text: "What is the most likely diagnosis?",
+    answer_format: "mcq",
+    options: raw.diagnosisOptions,
+    correct_answer: raw.correctOption,
+    explanation: "",
+  }
+}
+
+const allCases = rawCases.map(toCase)
+const hasDifficultyMetadata = rawCases.some((c) => c.difficulty !== undefined)
+const hasSpecialtyMetadata = rawCases.some((c) => c.specialty !== undefined)
 
 export function getCases(opts: {
   difficulty?: Difficulty
@@ -10,11 +77,13 @@ export function getCases(opts: {
 }): Case[] {
   let pool = allCases
 
-  if (opts.difficulty) {
+  // Difficulty/specialty are not yet present in the new JSON schema for all rows.
+  // Only filter when metadata exists so game modes still receive cases.
+  if (opts.difficulty && hasDifficultyMetadata) {
     pool = pool.filter((c) => c.difficulty === opts.difficulty)
   }
 
-  if (opts.specialty && opts.specialty !== "mixed") {
+  if (opts.specialty && opts.specialty !== "mixed" && hasSpecialtyMetadata) {
     pool = pool.filter((c) => c.specialty === opts.specialty)
   }
 
