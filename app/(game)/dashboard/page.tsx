@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Play, Users, Trophy, Target, TrendingUp, Swords, Zap, BookOpen, ChevronRight } from "lucide-react"
+import { Play, Users, Trophy, Target, TrendingUp, Swords, Zap, BookOpen, ChevronRight, LogIn } from "lucide-react"
 
 interface Stats {
   sessions: {
@@ -85,11 +85,17 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick play */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-3 mb-6">
         <Link href="/play">
           <Button className="w-full h-14 flex-col gap-1 shadow-lg shadow-primary/20" size="lg">
             <Play className="w-5 h-5 fill-current" />
             <span className="text-xs font-medium opacity-90">Solo Play</span>
+          </Button>
+        </Link>
+        <Link href="/room/join">
+          <Button variant="outline" className="w-full h-14 flex-col gap-1" size="lg">
+            <LogIn className="w-5 h-5" />
+            <span className="text-xs font-medium text-muted-foreground">Join Room</span>
           </Button>
         </Link>
         <Link href="/room/create">
