@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, use } from "react"
 import { useRouter } from "next/navigation"
+import QRCode from "react-qr-code"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import {
@@ -51,6 +52,7 @@ function formatTime(ms: number) {
 export default function RoomPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = use(params)
   const joinCode = code.toUpperCase()
+  const joinUrl = `https://rxarena.vercel.app/?joinCode=${joinCode}`
   const router = useRouter()
 
   const [phase, setPhase] = useState<RoomPhase>("lobby")
@@ -291,6 +293,10 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
               </Button>
             </div>
             <p className="text-xs text-muted-foreground">Share this code for others to join</p>
+            <div className="mt-4 rounded-lg bg-white p-2 shadow-sm">
+              <QRCode value={joinUrl} size={128} />
+            </div>
+            <p className="mt-2 text-[11px] text-muted-foreground break-all">{joinUrl}</p>
           </div>
         </Card>
 

@@ -1,17 +1,20 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AVATAR_COLORS } from "@/lib/identity"
 
 export default function LandingPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [displayName, setDisplayName] = useState("")
   const [avatarColor, setAvatarColor] = useState(AVATAR_COLORS[0])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const roomCodeFromQr = searchParams.get("joinCode")?.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)
+  const joinRoomPath = roomCodeFromQr?.length === 6 ? `/room/${roomCodeFromQr}` : null
 
   async function handleEnter() {
     const trimmed = displayName.trim()
@@ -39,7 +42,7 @@ export default function LandingPage() {
         displayName: data.displayName,
         avatarColor: data.avatarColor,
       }))
-      router.push("/dashboard")
+      router.push(joinRoomPath ?? "/dashboard")
     } catch {
       setError("Network error — please try again")
     } finally {
@@ -61,6 +64,11 @@ export default function LandingPage() {
 
         {/* Form */}
         <div className="space-y-5">
+          {joinRoomPath && (
+            <p className="text-xs text-center text-muted-foreground">
+              You will join room <span className="font-semibold text-foreground">{roomCodeFromQr}</span> after entering.
+            </p>
+          )}
           {/* Display name */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Your name</label>
