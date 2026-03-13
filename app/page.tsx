@@ -16,13 +16,18 @@ export default function LandingPage() {
   const joinRoomPath = roomCodeFromQr?.length === 6 ? `/room/${roomCodeFromQr}` : null
 
   useEffect(() => {
-    const joinCode = new URLSearchParams(window.location.search)
+    const params = new URLSearchParams(window.location.search)
+    const joinCode = params
       .get("joinCode")
       ?.toUpperCase()
       .replace(/[^A-Z0-9]/g, "")
       .slice(0, 6)
+    const reason = params.get("error")
 
     setRoomCodeFromQr(joinCode ?? null)
+    if (reason === "duplicate_name") {
+      setError("That display name is already taken in this room. Choose a different name to join.")
+    }
   }, [])
 
   async function handleEnter() {

@@ -100,6 +100,9 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
         const data = await joinRes.json()
         if (data.error === "already_started") {
           // They may be rejoining — fetch state and connect to SSE
+        } else if (data.error === "duplicate_name") {
+          router.push(`/?joinCode=${joinCode}&error=duplicate_name`)
+          return
         } else {
           router.push("/room/join")
           return
