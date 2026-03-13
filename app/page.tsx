@@ -1,20 +1,29 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { AVATAR_COLORS } from "@/lib/identity"
 
 export default function LandingPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [displayName, setDisplayName] = useState("")
   const [avatarColor, setAvatarColor] = useState(AVATAR_COLORS[0])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
-  const roomCodeFromQr = searchParams.get("joinCode")?.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6)
+  const [roomCodeFromQr, setRoomCodeFromQr] = useState<string | null>(null)
   const joinRoomPath = roomCodeFromQr?.length === 6 ? `/room/${roomCodeFromQr}` : null
+
+  useEffect(() => {
+    const joinCode = new URLSearchParams(window.location.search)
+      .get("joinCode")
+      ?.toUpperCase()
+      .replace(/[^A-Z0-9]/g, "")
+      .slice(0, 6)
+
+    setRoomCodeFromQr(joinCode ?? null)
+  }, [])
 
   async function handleEnter() {
     const trimmed = displayName.trim()
