@@ -80,8 +80,9 @@ export default function GameSessionPage({
       return;
     }
     const data = JSON.parse(raw) as SessionData;
-    // Evict stale sessions that predate the physicalExamination schema
-    if (data.cases?.length && !data.cases[0].physicalExamination) {
+    const firstCase = data.cases?.[0];
+    // Evict stale/invalid sessions that don't match current case shape.
+    if (!data.cases?.length || !firstCase?.physicalExamination || !firstCase?.patient_persona) {
       sessionStorage.removeItem(`rxarena_session_${sessionId}`);
       router.push("/play");
       return;
@@ -130,6 +131,10 @@ export default function GameSessionPage({
     if (!sessionData || timedOut || result) return;
     setTimedOut(true);
     const c = sessionData.cases[currentIndex];
+    if (!c) {
+      finishSession();
+      return;
+    }
     // Submit a wrong answer implicitly (timeout = incorrect, no score)
     await fetch(`/api/session/${sessionId}/submit`, {
       method: "POST",
@@ -161,6 +166,7 @@ export default function GameSessionPage({
     setSubmitting(true);
     const responseTimeMs = Date.now() - questionStartTime;
     const c = sessionData.cases[currentIndex];
+    if (!c) return;
 
     try {
       const res = await fetch(`/api/session/${sessionId}/submit`, {
@@ -244,6 +250,25 @@ export default function GameSessionPage({
   const isPractice = sessionData.mode === "practice";
   const isBlitz = sessionData.mode === "blitz";
   const isCompetitive = sessionData.mode === "competitive";
+  if (!currentCase) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-muted-foreground">Session data is out of date. Start a new game from Play.</p>
+      </div>
+    );
+  }
+
+  const pmhItems =
+    currentCase.patient_persona.past_medical_history?.filter(Boolean) ??
+    currentCase.patient_persona.history
+      .split(", ")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  const allergyItems = currentCase.patient_persona.allergies ?? [];
+  const admissionMeds = currentCase.patient_persona.medications_on_admission ?? [];
+  const homeMeds = currentCase.patient_persona.medications_at_home ?? [];
+  const surgicalHistory = currentCase.patient_persona.past_surgical_history ?? [];
+  const socialHistory = currentCase.patient_persona.social_history?.trim();
 
   return (
     <div className="min-h-screen bg-background">
@@ -381,13 +406,11 @@ export default function GameSessionPage({
                 </span>
               </div>
               <p className="text-xs text-muted-foreground leading-snug line-clamp-3">
-                {currentCase.patient_persona.history
-                  .split(", ")
+                {pmhItems
                   .slice(0, 3)
                   .map((item) => `• ${item}`)
                   .join("  ")}
-                {currentCase.patient_persona.history.split(", ").length > 3 &&
-                  ` +${currentCase.patient_persona.history.split(", ").length - 3} more`}
+                {pmhItems.length > 3 && ` +${pmhItems.length - 3} more`}
               </p>
             </button>
 
@@ -424,7 +447,7 @@ export default function GameSessionPage({
               </DialogTitle>
             </DialogHeader>
             <ul className="mt-2 space-y-2">
-              {currentCase.patient_persona.history.split(", ").map((item) => (
+              {pmhItems.map((item) => (
                 <li
                   key={item}
                   className="flex items-start gap-2 rounded-lg bg-muted/50 px-3 py-2"
@@ -434,6 +457,75 @@ export default function GameSessionPage({
                 </li>
               ))}
             </ul>
+            {allergyItems.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs font-semibold text-destructive mb-2">
+                  Allergies
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {allergyItems.map((allergy) => (
+                    <span
+                      key={allergy}
+                      className="inline-flex items-center rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive"
+                    >
+                      {allergy}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {admissionMeds.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs font-semibold text-primary mb-2">
+                  Medications on Admission
+                </p>
+                <ul className="space-y-1.5">
+                  {admissionMeds.map((med) => (
+                    <li key={med} className="text-sm text-muted-foreground">
+                      - {med}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {homeMeds.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs font-semibold text-primary mb-2">
+                  Home Medications
+                </p>
+                <ul className="space-y-1.5">
+                  {homeMeds.map((med) => (
+                    <li key={med} className="text-sm text-muted-foreground">
+                      - {med}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {surgicalHistory.length > 0 && (
+              <div className="mt-4">
+                <p className="text-xs font-semibold text-primary mb-2">
+                  Past Surgical History
+                </p>
+                <ul className="space-y-1.5">
+                  {surgicalHistory.map((entry) => (
+                    <li key={entry} className="text-sm text-muted-foreground">
+                      - {entry}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {socialHistory && (
+              <div className="mt-4 rounded-lg bg-muted/50 px-3 py-2.5">
+                <p className="text-xs font-semibold text-primary mb-1">
+                  Social History
+                </p>
+                <p className="text-sm text-foreground whitespace-pre-line leading-snug">
+                  {socialHistory}
+                </p>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
 
@@ -500,11 +592,16 @@ export default function GameSessionPage({
           {currentCase.options.map((option, index) => {
             const isSelected = selected === index;
             const isCorrectAnswer = result?.correctAnswer === index;
-            const isWrongSelected = result && isSelected && !isCorrectAnswer;
+            const isSelectedCorrect = Boolean(
+              result && isSelected && (isPractice ? isCorrectAnswer : result.isCorrect),
+            );
+            const isWrongSelected = Boolean(
+              result && isSelected && (isPractice ? !isCorrectAnswer : !result.isCorrect),
+            );
 
             let cardClass = "border-0 shadow-sm cursor-pointer transition-all";
             if (result || timedOut) {
-              if (isCorrectAnswer && isPractice)
+              if (isSelectedCorrect)
                 cardClass += " bg-emerald-500/10 border-2 border-emerald-500";
               else if (isWrongSelected)
                 cardClass += " bg-destructive/10 border-2 border-destructive";
@@ -523,7 +620,7 @@ export default function GameSessionPage({
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-sm font-medium ${
-                      result && isCorrectAnswer && isPractice
+                      isSelectedCorrect
                         ? "bg-emerald-500 text-white"
                         : isWrongSelected
                           ? "bg-destructive text-destructive-foreground"
@@ -532,7 +629,7 @@ export default function GameSessionPage({
                             : "bg-muted text-muted-foreground"
                     }`}
                   >
-                    {result && isCorrectAnswer && isPractice ? (
+                    {isSelectedCorrect ? (
                       <CheckCircle2 className="w-4 h-4" />
                     ) : isWrongSelected ? (
                       <XCircle className="w-4 h-4" />

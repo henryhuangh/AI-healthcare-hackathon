@@ -37,6 +37,12 @@ export async function POST(req: NextRequest) {
   })
 
   const cases = getCasesByIds(session.case_ids).map(stripAnswers)
+  if (cases.length === 0) {
+    return NextResponse.json(
+      { error: "No cases available for this selection. Try Standard or Mixed." },
+      { status: 422 }
+    )
+  }
 
   return NextResponse.json({
     sessionId: session.id,

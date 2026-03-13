@@ -1,188 +1,308 @@
 [
   {
-    "age": 56,
-    "gender": "F",
-    "caseId": "CASE_00001",
-    "subjectId": null,
-    "hadmId": null,
-    "diagnosisOptions": [
-      "COPD Exacerbation",
-      "Acute Pulmonary Edema",
-      "Pulmonary Embolism",
-      "Community-Acquired Pneumonia"
-    ],
-    "correctOption": 0,
-    "pastMedicalHistory": [
-      "COPD on home O2 4L/min",
-      "Hypertension",
-      "Type 2 diabetes",
-      "GERD",
-      "Depression"
-    ],
-    "physicalExamination": {
-      "vitals": [
-        { "Temperature": "98.2°F" },
-        { "Blood pressure": "139/72" },
-        { "Pulse": "84" },
-        { "Respiratory rate": "22" },
-        { "SpO2": "88% on 4L NC" }
-      ],
-      "findings": [
-        { "General": "Mild distress, sitting upright, using accessory muscles" },
-        { "HEENT": "Mild perioral cyanosis; pupils equal, round, and reactive to light; no lymphadenopathy" },
-        { "Cardiovascular": "S1 and S2 present, regular rate and rhythm; no murmurs, rubs, or gallops" },
-        { "Pulmonary": "Diffuse expiratory wheezing bilaterally; prolonged expiratory phase; decreased air entry at bilateral bases" },
-        { "Abdomen": "Soft, nontender, nondistended; positive bowel sounds" },
-        { "Extremities": "Trace pitting edema to bilateral ankles; no clubbing or cyanosis" },
-        { "Neurologic": "Alert and oriented x3; no focal deficits" }
-      ]
-    }
-  },
-  {
-    "age": 67,
+    "age": 66,
     "gender": "M",
     "caseId": "CASE_00002",
-    "subjectId": null,
-    "hadmId": null,
-    "diagnosisOptions": [
-      "Emergent percutaneous coronary intervention (PCI)",
-      "IV heparin infusion alone",
-      "Thrombolytic therapy with alteplase",
-      "Urgent surgical coronary artery bypass grafting (CABG)"
+    "subjectId": 5525,
+    "hadmId": 132331.0,
+    "medicationsAtHome": [],
+    "allergies": ["Neupogen", "Neurontin", "Dilaudid"],
+    "socialHistory": "Social History:\nDenies any history of Tobacco use, no EtOh use for [**Last Name (un) **] than 20\nyears, no drug use. Lives with his wife, now on disability. Used\nto work as a spray painter. Has 3 children and multiple\ngrandchildren.",
+    "pastSurgicalHistory": null,
+    "medicationsOnAdmission": [
+      "Albuterol",
+      "Plavix 75mg PO daily",
+      "Metoprolol 50mg PO TID",
+      "Prilosec 20mg PO daily",
+      "Prednisone 5mg PO daily",
+      "Sevelamer 2400mg PO TID with meals",
+      "Simvastatin 10mg PO daily",
+      "Nephro-vite 1 capsule PO daily",
+      "Vitamin A [Numeric Identifier 961] units PO daily"
     ],
-    "correctOption": 0,
+    "medicalField": "vascular surgery",
     "pastMedicalHistory": [
-      "Hypertension",
-      "Type 2 diabetes",
-      "30 pack-year smoking history",
-      "Hyperlipidemia"
+      "Atrial fibrillation, status post cardioversion, previously on coumadin for 6 months, currently not anticoagulated due to fall risk",
+      "Pericardial effusion, status post drainage, unclear etiology",
+      "End-stage renal disease from acute tubular necrosis in the setting of acute gastroenteritis, status post failed transplant"
     ],
     "physicalExamination": {
       "vitals": [
-        { "Temperature": "37.2°C" },
-        { "Blood pressure": "158/95" },
-        { "Pulse": "110" },
-        { "Respiratory rate": "22" },
-        { "SpO2": "94% on room air" }
+        {
+          "Temperature": "99.5 F"
+        },
+        {
+          "Heart Rate": "88 bpm"
+        },
+        {
+          "Blood Pressure": "96/62 mmHg"
+        },
+        {
+          "Respiratory Rate": "18 /min"
+        },
+        {
+          "Oxygen Saturation": "96% on room air"
+        }
       ],
       "findings": [
-        { "General": "Acute distress, diaphoretic, clutching chest" },
-        { "HEENT": "Normocephalic, atraumatic; pupils equal and reactive; no JVD appreciated at 45 degrees" },
-        { "Cardiovascular": "Tachycardic; S1 and S2 present; S4 gallop noted; no murmurs or rubs" },
-        { "Pulmonary": "Mild bibasilar crackles; no wheezing" },
-        { "Abdomen": "Soft, nontender, nondistended; positive bowel sounds" },
-        { "Extremities": "Cool and clammy; no peripheral edema; pulses 2+ throughout" },
-        { "Neurologic": "Alert and oriented x3; anxious but no focal neurologic deficits" }
+        {
+          "General": "No acute distress, alert and oriented x3"
+        },
+        {
+          "Lungs": "Decreased breath sounds bilaterally"
+        },
+        {
+          "Cardiovascular": "Irregularly irregular rhythm"
+        },
+        {
+          "Abdomen": "Soft, non-tender, non-distended"
+        },
+        {
+          "Extremities": "Right transmetatarsal amputation site with 4 x 6 cm black eschar, no active purulent drainage, slight surrounding erythema"
+        },
+        {
+          "Vascular": "1+ femoral pulses bilaterally; Dopplerable popliteal/posterior tibial/dorsalis pedis pulses bilaterally"
+        }
       ]
-    }
+    },
+    "difficulty": "medium",
+    "diagnosisOptions": [
+      "Cellulitis",
+      "Deep vein thrombosis",
+      "GANGRENE RIGHT FOOT",
+      "Congestive heart failure exacerbation"
+    ],
+    "correctOption": 2
   },
   {
-    "age": 34,
+    "age": 89,
     "gender": "F",
-    "caseId": "CASE_00003",
-    "subjectId": null,
-    "hadmId": null,
-    "diagnosisOptions": [
-      "Hypothyroidism",
-      "Major Depressive Disorder",
-      "Iron Deficiency Anemia",
-      "Cushing's Syndrome"
-    ],
-    "correctOption": 0,
-    "pastMedicalHistory": [
-      "No significant past medical history",
-      "No current medications"
-    ],
-    "physicalExamination": {
-      "vitals": [
-        { "Temperature": "36.1°C" },
-        { "Blood pressure": "105/68" },
-        { "Pulse": "58" },
-        { "Respiratory rate": "14" },
-        { "SpO2": "99% on room air" }
-      ],
-      "findings": [
-        { "General": "Fatigued-appearing woman in no acute distress; affect flat and sluggish" },
-        { "HEENT": "Coarse, dry hair with diffuse thinning; periorbital puffiness; thyroid mildly enlarged and non-tender; no lymphadenopathy" },
-        { "Cardiovascular": "Bradycardic; S1 and S2 present; no murmurs, rubs, or gallops" },
-        { "Pulmonary": "Clear to auscultation bilaterally; no wheezing or crackles" },
-        { "Abdomen": "Soft, mildly distended; hypoactive bowel sounds; no tenderness" },
-        { "Extremities": "Dry, cool skin; non-pitting edema of bilateral lower extremities; delayed relaxation phase of deep tendon reflexes" },
-        { "Neurologic": "Alert and oriented x3; psychomotor slowing; no focal deficits" }
-      ]
-    }
-  },
-  {
-    "age": 45,
-    "gender": "M",
     "caseId": "CASE_00004",
-    "subjectId": null,
-    "hadmId": null,
-    "diagnosisOptions": [
-      "Subarachnoid Hemorrhage",
-      "Bacterial Meningitis",
-      "Hypertensive Emergency",
-      "Migraine with Aura"
+    "subjectId": 3313,
+    "hadmId": 199943.0,
+    "medicationsAtHome": [],
+    "allergies": ["Sulfa (Sulfonamides)", "Bactrim"],
+    "socialHistory": "Social History:\nlives at nursing home; grand-niece is Health [**Name (NI) **] proxy",
+    "pastSurgicalHistory": null,
+    "medicationsOnAdmission": [
+      "Tylenol as needed",
+      "Artificial tears",
+      "Fluticasone 110 mcg 2 puffs daily",
+      "Flonase 1 spray",
+      "Neurontin 400 mg three times daily",
+      "Lactobacillus",
+      "Synthroid 50 mcg daily",
+      "Lidocaine patch 5% topical daily",
+      "Oxycodone 2.5 mg as needed",
+      "Potassium chloride 20 mEq daily",
+      "Bacitracin ointment to chest",
+      "Clotrimazole 1% to rectum"
     ],
-    "correctOption": 0,
+    "medicalField": "vascular surgery",
     "pastMedicalHistory": [
-      "Smoker (1 PPD x 20 years)",
-      "Occasional alcohol use",
-      "No prior headache history"
+      "Congestive heart failure",
+      "History of bradycardia",
+      "Atrial fibrillation on low-dose coumadin",
+      "Critical aortic stenosis",
+      "History of breast cancer status post mastectomy",
+      "History of zoster with post-herpetic neuralgia on right ribs",
+      "Hypertension",
+      "Hypothyroidism",
+      "History of MRSA UTI",
+      "Chronic diarrhea",
+      "History of aspiration",
+      "Status post Pneumovax"
     ],
     "physicalExamination": {
       "vitals": [
-        { "Temperature": "37.0°C" },
-        { "Blood pressure": "175/100" },
-        { "Pulse": "88" },
-        { "Respiratory rate": "18" },
-        { "SpO2": "98% on room air" }
+        {
+          "Temperature": "93.0 F"
+        },
+        {
+          "Pulse": "96 bpm"
+        },
+        {
+          "Blood Pressure": "102/42 mmHg"
+        },
+        {
+          "Respiratory Rate": "15/min"
+        },
+        {
+          "Oxygen Saturation": "98% on room air"
+        }
       ],
       "findings": [
-        { "General": "Distressed male, lying still in a darkened room; vomited once in triage" },
-        { "HEENT": "Photophobia present; pupils equal and sluggishly reactive bilaterally; no papilledema on fundoscopy; nuchal rigidity present" },
-        { "Cardiovascular": "Regular rate and rhythm; S1 and S2 present; no murmurs" },
-        { "Pulmonary": "Clear to auscultation bilaterally" },
-        { "Abdomen": "Soft, nontender, nondistended; normoactive bowel sounds" },
-        { "Extremities": "No edema; pulses intact throughout" },
-        { "Neurologic": "GCS 14 (E4V4M6); Kernig's sign positive; Brudzinski's sign positive; no focal motor deficits" }
+        {
+          "General": "Alert and oriented x3, no acute distress"
+        },
+        {
+          "HEENT": "Oropharynx clear, EOMI, PERRL"
+        },
+        {
+          "Neck": "Supple, no lymphadenopathy"
+        },
+        {
+          "Chest": "Crackles at bases; scrape on right side of chest with mild bleeding, no erythema or pus"
+        },
+        {
+          "Cardiovascular": "Regular rate and rhythm, systolic murmur"
+        },
+        {
+          "Abdomen": "Soft, non-tender, non-distended, positive bowel sounds"
+        },
+        {
+          "Extremities": "Warm, well-perfused, no edema"
+        },
+        {
+          "Rectal": "Guaiac negative"
+        }
       ]
-    }
+    },
+    "difficulty": "medium",
+    "diagnosisOptions": [
+      "UPPER GASTROINTESTINAL BLEED",
+      "Acute appendicitis",
+      "Diabetic ketoacidosis",
+      "Pulmonary embolism"
+    ],
+    "correctOption": 0
   },
   {
-    "age": 19,
+    "age": 29,
     "gender": "M",
     "caseId": "CASE_00005",
-    "subjectId": null,
-    "hadmId": null,
-    "diagnosisOptions": [
-      "IV fluids -> insulin infusion -> potassium repletion monitoring",
-      "Insulin bolus immediately, then IV fluids",
-      "Sodium bicarbonate infusion to correct acidosis first",
-      "Oral rehydration and subcutaneous insulin correction dose"
+    "subjectId": 42186,
+    "hadmId": 181043.0,
+    "medicationsAtHome": [],
+    "allergies": [],
+    "socialHistory": "Social History:\nRecently married. Social drinker, recently started smoking\nagain. No illicit drug use",
+    "pastSurgicalHistory": null,
+    "medicationsOnAdmission": [
+      "Dextroamphetamine 10 mg daily",
+      "Fluoxetine 40 mg daily"
     ],
-    "correctOption": 0,
+    "medicalField": "vascular surgery",
     "pastMedicalHistory": [
-      "Type 1 diabetes mellitus (diagnosed age 12)",
-      "Missed insulin doses for 3 days"
+      "Depression",
+      "Prior suicide attempt (cutting behavior)",
+      "Myoclonic jerking"
     ],
     "physicalExamination": {
       "vitals": [
-        { "Temperature": "37.4°C" },
-        { "Blood pressure": "98/62" },
-        { "Pulse": "118" },
-        { "Respiratory rate": "28" },
-        { "SpO2": "97% on room air" }
+        {
+          "Temperature": "96"
+        },
+        {
+          "Pulse": "59-84"
+        },
+        {
+          "Blood Pressure": "115-134/63-86"
+        },
+        {
+          "Respiratory Rate": "14-22"
+        },
+        {
+          "Pulse Oximetry": "99-100%"
+        }
       ],
       "findings": [
-        { "General": "Ill-appearing, lethargic young male; fruity odor on breath" },
-        { "HEENT": "Dry mucous membranes; sunken eyes; pupils equal and reactive; no lymphadenopathy" },
-        { "Cardiovascular": "Tachycardic; S1 and S2 present; no murmurs; capillary refill 3 seconds" },
-        { "Pulmonary": "Kussmaul respirations (deep, labored, rapid); clear to auscultation" },
-        { "Abdomen": "Diffuse mild tenderness to palpation; no guarding or rebound; hypoactive bowel sounds" },
-        { "Extremities": "Skin turgor decreased; cool peripheries; no edema" },
-        { "Neurologic": "Lethargic but arousable; oriented to person only; no focal deficits" }
+        {
+          "General": "Extubated, awake, blunted affect"
+        },
+        {
+          "HEENT": "NC/AT, pupils 5 mm minimally reactive bilaterally, no nystagmus, sclera anicteric, moderately dry mucous membranes"
+        },
+        {
+          "Neck": "Supple, no LAD"
+        },
+        {
+          "Lungs": "Clear to auscultation bilaterally, no wheezes, rales, or rhonchi"
+        },
+        {
+          "Cardiovascular": "Regular rate and rhythm, normal S1 and S2, no murmurs, rubs, or gallops"
+        },
+        {
+          "Abdomen": "Soft, non-tender, non-distended, bowel sounds present, no rebound or guarding, no organomegaly"
+        },
+        {
+          "Extremities": "FROM x4, warm, well perfused, 2+ pulses, no clubbing, cyanosis, or edema"
+        },
+        {
+          "Neurologic": "No clonus or hyperreflexia, no gross motor or sensory deficit"
+        }
       ]
-    }
+    },
+    "difficulty": "medium",
+    "diagnosisOptions": [
+      "Acute ischemic stroke",
+      "Aortic dissection",
+      "Peripheral arterial disease",
+      "OVERDOSE"
+    ],
+    "correctOption": 3
+  },
+  {
+    "age": 69,
+    "gender": "M",
+    "caseId": "CASE_00006",
+    "subjectId": 53876,
+    "hadmId": 106315.0,
+    "medicationsAtHome": [],
+    "allergies": [],
+    "socialHistory": "Social History:\nLives with wife, Ex [**Name (NI) 2570**], quit smoking 25 years ago, drinks a\nglass of wine on occasions, no drug abuse",
+    "pastSurgicalHistory": null,
+    "medicationsOnAdmission": [
+      "famotidine 20 mg",
+      "labetalol 400 mg twice daily",
+      "Benicar 40 mg once daily",
+      "methocarbamol 750 mg three times daily",
+      "warfarin 1 tablet daily (strength unknown)",
+      "allopurinol 300 mg daily",
+      "simvastatin 40 mg daily",
+      "prednisone 5 mg orally as needed for gout; last dose 1 week ago"
+    ],
+    "medicalField": "vascular surgery",
+    "pastMedicalHistory": [
+      "Hyperlipidemia",
+      "Hypertension",
+      "Benign prostatic hyperplasia",
+      "Right superior cerebellar artery stroke",
+      "Prostate cancer status post brachytherapy 5 years ago",
+      "Gout",
+      "Atrial fibrillation",
+      "Status post lumbar laminectomy",
+      "Status post tonsillectomy"
+    ],
+    "physicalExamination": {
+      "vitals": [
+        {
+          "Pulse": "58"
+        },
+        {
+          "Respiratory rate": "18"
+        },
+        {
+          "Oxygen saturation": "97%"
+        },
+        {
+          "Blood pressure": "206/72"
+        },
+        {
+          "Height": "6'1\""
+        },
+        {
+          "Weight": "220 lbs"
+        }
+      ],
+      "findings": []
+    },
+    "difficulty": "medium",
+    "diagnosisOptions": [
+      "Benign paroxysmal positional vertigo",
+      "AORTIC DISSECTION",
+      "Parkinson disease",
+      "Subarachnoid hemorrhage"
+    ],
+    "correctOption": 1
   }
 ]

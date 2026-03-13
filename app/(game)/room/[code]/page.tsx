@@ -445,6 +445,15 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
     )
   }
 
+  const pmhItems =
+    currentCase.patient_persona.past_medical_history?.filter(Boolean) ??
+    currentCase.patient_persona.history
+      .split(", ")
+      .map((item) => item.trim())
+      .filter(Boolean)
+  const allergyItems = currentCase.patient_persona.allergies ?? []
+  const socialHistory = currentCase.patient_persona.social_history?.trim()
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -493,8 +502,23 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
           </div>
 
           <p className="text-xs text-muted-foreground mb-3">
-            <span className="font-medium">History:</span> {currentCase.patient_persona.history}
+            <span className="font-medium">History:</span>{" "}
+            {pmhItems.slice(0, 3).join(", ")}
+            {pmhItems.length > 3 ? ` (+${pmhItems.length - 3} more)` : ""}
           </p>
+
+          {allergyItems.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-3">
+              {allergyItems.map((allergy) => (
+                <span
+                  key={allergy}
+                  className="inline-flex items-center rounded-full bg-destructive/10 px-2 py-0.5 text-[11px] text-destructive"
+                >
+                  {allergy}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2 mb-3">
             {(currentCase.physicalExamination?.vitals ?? []).map((vital) => {
@@ -518,6 +542,12 @@ export default function RoomPage({ params }: { params: Promise<{ code: string }>
               )
             })}
           </div>
+
+          {socialHistory && (
+            <p className="text-xs text-muted-foreground whitespace-pre-line">
+              <span className="font-medium text-foreground">Social:</span> {socialHistory}
+            </p>
+          )}
 
           {currentCase.labs && currentCase.labs.length > 0 && (
             <div className="mt-3 space-y-1">

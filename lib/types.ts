@@ -1,5 +1,6 @@
 export type Difficulty = "easy" | "standard" | "hard"
 export type GameMode = "practice" | "competitive" | "blitz"
+export type CasesJsonDifficulty = Difficulty | "medium"
 export type Specialty =
   | "cardiology"
   | "neurology"
@@ -24,25 +25,39 @@ export interface CasesJsonCase {
   caseId: string
   subjectId: number | null
   hadmId: number | null
+  medicationsAtHome?: string[]
+  allergies?: string[]
+  socialHistory?: string | null
+  pastSurgicalHistory?: string[] | string | null
+  medicationsOnAdmission?: string[]
+  medicalField?: string
   diagnosisOptions: string[]
   correctOption: number
   pastMedicalHistory: string[]
   physicalExamination: CasesJsonPhysicalExam
   // Optional fields for future enrichment
-  difficulty?: Difficulty
+  difficulty?: CasesJsonDifficulty
   specialty?: Specialty
+}
+
+export interface CasePatientPersona {
+  age: number
+  sex: string
+  chief_complaint: string
+  history: string
+  past_medical_history?: string[]
+  social_history?: string
+  allergies?: string[]
+  medications_on_admission?: string[]
+  medications_at_home?: string[]
+  past_surgical_history?: string[]
 }
 
 export interface Case {
   id: string
   difficulty: Difficulty
   specialty: Specialty
-  patient_persona: {
-    age: number
-    sex: string
-    chief_complaint: string
-    history: string
-  }
+  patient_persona: CasePatientPersona
   physicalExamination: CasesJsonPhysicalExam
   labs?: string[]
   imaging_text?: string
